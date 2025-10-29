@@ -19,7 +19,7 @@ from src.lib.middleware import auth_middleware
 # ------------------------------------------------------------------------------
 # MCP server and tools
 # ------------------------------------------------------------------------------
-mcp = FastMCP(config.SERVER_NAME)
+mcp = FastMCP(config.SERVER_NAME, stateless_http=True)
 
 @mcp.tool(name="greet_user", description="Greets the user with a personalized message.")
 async def greet_user(name: str, ctx: Context | None = None) -> dict:
@@ -35,19 +35,19 @@ mcp_app = mcp.http_app(path="/")
 # ------------------------------------------------------------------------------
 app = FastAPI(lifespan=mcp_app.lifespan)
 
-# CORS on the outer app (covers MCP too)
+# Your existing HTTP auth middleware (keeps 401 + WWW-Authenticate behavior)
+app.middleware("http")(auth_middleware)
+
+# CORS on the outer app (covers MCP too) - must be after auth middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=False,
-    allow_methods=["GET", "POST", "OPTIONS"],
-    allow_headers=["Mcp-Protocol-Version", "Content-Type", "Authorization"],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allow_headers=["*"],
     expose_headers=["WWW-Authenticate"],
     max_age=86400,
 )
-
-# Your existing HTTP auth middleware (keeps 401 + WWW-Authenticate behavior)
-app.middleware("http")(auth_middleware)
 
 
 # ------------------------------------------------------------------------------
