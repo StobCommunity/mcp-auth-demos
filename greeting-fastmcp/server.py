@@ -15,12 +15,13 @@ To run:
 import os
 from fastmcp import FastMCP
 from fastmcp.server.auth.providers.scalekit import ScalekitProvider
+from fastmcp.server.dependencies import get_access_token, AccessToken
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv()
 
-mcp = FastMCP("Greeting Server", auth=ScalekitProvider(
+mcp = FastMCP("Greeting Server", stateless_http=True, auth=ScalekitProvider(
     environment_url=os.getenv("SCALEKIT_ENVIRONMENT_URL"),
     client_id=os.getenv("SCALEKIT_CLIENT_ID"),
     resource_id=os.getenv("SCALEKIT_RESOURCE_ID"),
@@ -32,7 +33,9 @@ mcp = FastMCP("Greeting Server", auth=ScalekitProvider(
 @mcp.tool
 def greet_user(name: str) -> str:
     """Return a personalized greeting for the authenticated user."""
-
+    token: AccessToken = get_access_token()
+    if "usr:read" not in token.scopes: # keep scope validation closer to tool
+        return f"You dont have sufficient permissions to access this tool."
     return f"Welcome to Scalekit, {name}."
 
 

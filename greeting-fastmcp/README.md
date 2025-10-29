@@ -13,7 +13,8 @@ A production-ready Python-based Model Context Protocol (MCP) server using [FastM
 
 ### Register your MCP server on Scalekit
 1. Login to your [Scalekit Dashboard](https://app.scalekit.com) -> MCP Servers -> Add MCP Server
-2. Server URL = `http://localhost:3002/` should have a trailing slash -> Save
+2. Server URL = `http://localhost:3002/` should have a trailing slash
+3. Create a scope called `usr:read` with description `Read user information`, select it -> Save
 
 ### MCP server runtime
 
@@ -52,7 +53,8 @@ A production-ready Python-based Model Context Protocol (MCP) server using [FastM
 ## Available Tools
 
 ### greet_user
-- **Description**: Greets a user with a personalized message
+- **Description**: Greets a user with a personalized message. It checks for scopes before responding.
+- **Scopes Required**: `usr:read`
 - **Parameters**: `name` (string) - The name of the user to greet
 
 ## Authentication
