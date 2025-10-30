@@ -44,6 +44,12 @@ async def auth_middleware(request: Request, call_next):
     4. Returns proper OAuth 2.1 error responses on failure
     """
     try:
+        # Log all request headers in a pretty format
+        headers_dict = dict(request.headers)
+        logger.info(f"Request headers for {request.method} {request.url.path}:")
+        for header, value in headers_dict.items():
+            logger.info(f"  {header}: {value}")
+
         # Allow public access to OAuth discovery, health, and MCP root endpoints
         if ".well-known" in request.url.path or request.url.path == "/health":
             return await call_next(request)
