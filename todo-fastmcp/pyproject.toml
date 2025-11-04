@@ -1,7 +1,7 @@
 [project]
-name = "greeting-fastmcp"
+name = "todo-fastmcp"
 version = "0.1.0"
-description = "Add your description here"
+description = "FastMCP-based MCP server providing in-memory todo CRUD tools"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [

@@ -1,12 +1,13 @@
-# FastMCP MCP Server with Scalekit Authentication
+# FastMCP Todo MCP Server with Scalekit Authentication
 
-A production-ready Python-based Model Context Protocol (MCP) server using [FastMCP](https://github.com/scalekit-inc/fastmcp) with Scalekit OAuth 2.1 authentication integration.
+A production-ready Python-based Model Context Protocol (MCP) server using [FastMCP](https://github.com/scalekit-inc/fastmcp) with Scalekit OAuth 2.1 authentication. It exposes in-memory CRUD tooling for managing todo items.
 
 ## Features
 
 - **Scalekit OAuth 2.1**: Secure authentication with scope-based authorization
+- **In-Memory Todo Store**: Create, read, update, and delete todos without external storage
 - **FastMCP Backend**: Modern, fast Python MCP server
-- **Simple Tool Registration**: Easily add new tools
+- **Simple Tool Registration**: Easily extend with additional tools
 - **.env Support**: Environment-based configuration
 
 ## Quick Start
@@ -14,7 +15,10 @@ A production-ready Python-based Model Context Protocol (MCP) server using [FastM
 ### Register your MCP server on Scalekit
 1. Login to your [Scalekit Dashboard](https://app.scalekit.com) -> MCP Servers -> Add MCP Server
 2. Server URL = `http://localhost:3002/` should have a trailing slash
-3. Create a scope called `usr:read` with description `Read user information`, select it -> Save
+3. Create/Associate two scopes with your MCP server:
+   - `todo:read` with description `Read todos`
+   - `todo:write` with description `Create or modify todos`
+4. Hit Save
 
 ### MCP server runtime
 
@@ -50,19 +54,57 @@ A production-ready Python-based Model Context Protocol (MCP) server using [FastM
 
 	The server will start on `http://localhost:3002/` (or the port you set in `.env`).
 
+### Connect to your todo MCP server
+You can use any MCP-compatible client to interact with your todo MCP server.
+For testing, you can use mcp-inspector
+1. Start mcp-inspector:
+   ```bash
+   npx @modelcontextprotocol/inspector@latest
+   ```
+2. In the UI, set the MCP URL to `http://localhost:3002/` (or your configured URL) and connect. You can now use the available tools.
+
 ## Available Tools
 
-### greet_user
-- **Description**: Greets a user with a personalized message. It checks for scopes before responding.
-- **Scopes Required**: `usr:read`
-- **Parameters**: `name` (string) - The name of the user to greet
+### create_todo
+- **Description**: Create a new todo item
+- **Scopes Required**: `todo:write`
+- **Parameters**:
+  - `title` (string) - Todo title
+  - `description` (optional string) - Todo description
+
+### list_todos
+- **Description**: List todos, optionally filtering by completion state
+- **Scopes Required**: `todo:read`
+- **Parameters**:
+  - `completed` (optional boolean) - When provided, return only todos with this completion status
+
+### get_todo
+- **Description**: Retrieve a single todo by ID
+- **Scopes Required**: `todo:read`
+- **Parameters**:
+  - `todo_id` (string) - Identifier returned by `create_todo`
+
+### update_todo
+- **Description**: Update fields on an existing todo
+- **Scopes Required**: `todo:write`
+- **Parameters**:
+  - `todo_id` (string) - Identifier returned by `create_todo`
+  - `title` (optional string) - New title
+  - `description` (optional string) - New description
+  - `completed` (optional boolean) - Updated completion state
+
+### delete_todo
+- **Description**: Delete a todo by ID
+- **Scopes Required**: `todo:write`
+- **Parameters**:
+  - `todo_id` (string) - Identifier returned by `create_todo`
 
 ## Authentication
 
 The server implements Scalekit OAuth 2.1 authentication:
 
 - **Bearer Token Validation**: All MCP requests require valid Bearer tokens
-- **Public Endpoints**: OAuth discovery and health check endpoints are publicly accessible
+- **Public Endpoints**: OAuth discovery endpoint are publicly accessible
 - **OAuth 2.1 Compliance**: Returns proper error responses
 
 ## API Endpoints
@@ -90,8 +132,8 @@ The server implements Scalekit OAuth 2.1 authentication:
 	```python
 	@mcp.tool
 	def your_tool(param: str) -> str:
-		 """Describe your tool here."""
-		 return "result"
+	    """Describe your tool here."""
+	    return "result"
 	```
 
 2. **Document the tool** in this README under "Available Tools".
