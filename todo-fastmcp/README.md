@@ -54,6 +54,15 @@ A production-ready Python-based Model Context Protocol (MCP) server using [FastM
 
 	The server will start on `http://localhost:3002/` (or the port you set in `.env`).
 
+### Connect to your todo MCP server
+You can use any MCP-compatible client to interact with your todo MCP server.
+For testing, you can use mcp-inspector
+1. Start mcp-inspector:
+   ```bash
+   npx @modelcontextprotocol/inspector@latest
+   ```
+2. In the UI, set the MCP URL to `http://localhost:3002/` (or your configured URL) and connect. You can now use the available tools.
+
 ## Available Tools
 
 ### create_todo
