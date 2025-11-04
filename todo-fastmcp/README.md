@@ -104,7 +104,7 @@ For testing, you can use mcp-inspector
 The server implements Scalekit OAuth 2.1 authentication:
 
 - **Bearer Token Validation**: All MCP requests require valid Bearer tokens
-- **Public Endpoints**: OAuth discovery and health check endpoints are publicly accessible
+- **Public Endpoints**: OAuth discovery endpoint are publicly accessible
 - **OAuth 2.1 Compliance**: Returns proper error responses
 
 ## API Endpoints
