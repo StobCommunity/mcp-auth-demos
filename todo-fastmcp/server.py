@@ -48,19 +48,19 @@ class TodoItem:
 _TODO_STORE: dict[str, TodoItem] = {}
 
 
-def _require_scope(scope: str) -> tuple[bool, Optional[str]]:
-    """Validate that the active token contains the expected scope."""
+def _require_scope(scope: str) -> Optional[str]:
+    """Return an error message if the active token lacks the expected scope, else None."""
     token: AccessToken = get_access_token()
     if scope not in token.scopes:
-        return False, f"Insufficient permissions: `{scope}` scope required."
-    return True, None
+        return f"Insufficient permissions: `{scope}` scope required."
+    return None
 
 
 @mcp.tool
 def create_todo(title: str, description: Optional[str] = None) -> dict:
     """Create a new todo item."""
-    ok, error = _require_scope("todo:write")
-    if not ok:
+    error = _require_scope("todo:write")
+    if error:
         return {"error": error}
 
     todo = TodoItem(id=str(uuid.uuid4()), title=title, description=description)
@@ -72,8 +72,8 @@ def create_todo(title: str, description: Optional[str] = None) -> dict:
 @mcp.tool
 def list_todos(completed: Optional[bool] = None) -> dict:
     """List all todos, optionally filtering by completion state."""
-    ok, error = _require_scope("todo:read")
-    if not ok:
+    error = _require_scope("todo:read")
+    if error:
         return {"error": error}
 
     todos = [
@@ -87,8 +87,8 @@ def list_todos(completed: Optional[bool] = None) -> dict:
 @mcp.tool
 def get_todo(todo_id: str) -> dict:
     """Fetch a single todo by its identifier."""
-    ok, error = _require_scope("todo:read")
-    if not ok:
+    error = _require_scope("todo:read")
+    if error:
         return {"error": error}
 
     todo = _TODO_STORE.get(todo_id)
@@ -106,8 +106,8 @@ def update_todo(
     completed: Optional[bool] = None,
 ) -> dict:
     """Update fields on an existing todo."""
-    ok, error = _require_scope("todo:write")
-    if not ok:
+    error = _require_scope("todo:write")
+    if error:
         return {"error": error}
 
     todo = _TODO_STORE.get(todo_id)
@@ -127,8 +127,8 @@ def update_todo(
 @mcp.tool
 def delete_todo(todo_id: str) -> dict:
     """Remove a todo from the store."""
-    ok, error = _require_scope("todo:write")
-    if not ok:
+    error = _require_scope("todo:write")
+    if error:
         return {"error": error}
 
     todo = _TODO_STORE.pop(todo_id, None)
