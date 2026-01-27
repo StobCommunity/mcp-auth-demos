@@ -1,0 +1,17 @@
+{
+  "name": "greeting-mcp-server",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.13.0",
+    "@scalekit-sdk/node": "^2.1.4",
+    "zod": "^3.25.57"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}

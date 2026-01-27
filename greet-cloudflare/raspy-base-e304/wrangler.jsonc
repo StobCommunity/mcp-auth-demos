@@ -1,0 +1,30 @@
+{
+  "name": "raspy-base-e304",
+  "main": "src/worker.ts",
+  "workers_dev": true,
+  "preview_urls": false,
+  "compatibility_date": "2026-01-27",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1,
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "persist": true,
+      "invocation_logs": true
+    },
+    "traces": {
+      "enabled": false,
+      "persist": true,
+      "head_sampling_rate": 1
+    }
+  },
+  "vars": {
+    "PROTECTED_RESOURCE_METADATA": "your-protected-resource-metadata-json",
+    "EXPECTED_AUDIENCE": "your-mcp-server-url-as-registered-in-scalekit-dashboard", // https://raspy-base-123.user-name.workers.dev/mcp
+    "SK_ENV_URL": "your-scalekit-environment",
+    "SK_CLIENT_ID": "your-scalekit-client-id" // skc_123
+    // SK_CLIENT_SECRET should not be hardcoded here. it should be uploaded using `wrangler secret put SK_CLIENT_SECRET`
+  }
+}
