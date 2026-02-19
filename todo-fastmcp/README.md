@@ -41,9 +41,8 @@ A production-ready Python-based Model Context Protocol (MCP) server using [FastM
 
 	- `PORT`: (optional) The port the server will listen on. Defaults to 3002.
 	- `SCALEKIT_ENVIRONMENT_URL`: Your Scalekit environment URL (required).
-	- `SCALEKIT_CLIENT_ID`: Your Scalekit client ID (required).
 	- `SCALEKIT_RESOURCE_ID`: Your Scalekit MCP server resource ID (required).
-	- `MCP_URL`: The MCP server URL as registered in the Scalekit dashboard (required; e.g., `http://localhost:3002/`). This MUST have a trailing slash.
+	- `MCP_BASE_URL`: The MCP server URL as registered in the Scalekit dashboard (required; e.g., `http://localhost:3002/`). This MUST have a trailing slash.
 
 	> **Note:** After editing `.env`, restart the server for changes to take effect.
 
@@ -116,13 +115,12 @@ The server implements Scalekit OAuth 2.1 authentication:
 
 ## Environment Variables
 
-| Variable | Description | Default | Required |
-|----------|-------------|---------|----------|
+| Variable                   | Description | Default | Required |
+|----------------------------|-------------|---------|----------|
 | `SCALEKIT_ENVIRONMENT_URL` | Scalekit environment URL | - | Yes |
-| `SCALEKIT_CLIENT_ID` | Scalekit client ID | - | Yes |
-| `SCALEKIT_RESOURCE_ID` | Scalekit MCP server resource ID | - | Yes |
-| `MCP_URL` | The MCP server URL as registered in the Scalekit dashboard (e.g., `http://localhost:3002/`). This MUST have a trailing slash.  | - | Yes |
-| `PORT` | Server port | `3002` | No |
+| `SCALEKIT_RESOURCE_ID`     | Scalekit MCP server resource ID | - | Yes |
+| `MCP_BASE_URL`                 | The MCP server URL as registered in the Scalekit dashboard (e.g., `http://localhost:3002/`). This MUST have a trailing slash.  | - | Yes |
+| `PORT`                     | Server port | `3002` | No |
 
 ## Development
 

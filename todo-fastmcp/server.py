@@ -19,13 +19,11 @@ load_dotenv()
 
 mcp = FastMCP(
     "Todo Server",
-    stateless_http=True,
     auth=ScalekitProvider(
         environment_url=os.getenv("SCALEKIT_ENVIRONMENT_URL"),
-        client_id=os.getenv("SCALEKIT_CLIENT_ID"),
         resource_id=os.getenv("SCALEKIT_RESOURCE_ID"),
         # FastMCP appends /mcp automatically; keep base URL with trailing slash only.
-        mcp_url=os.getenv("MCP_URL"),
+        base_url=os.getenv("MCP_BASE_URL"),
     ),
 )
 
@@ -139,4 +137,4 @@ def delete_todo(todo_id: str) -> dict:
 
 
 if __name__ == "__main__":
-    mcp.run(transport="http", port=int(os.getenv("PORT", "3002")))
+    mcp.run(transport="http", port=int(os.getenv("PORT", "3002")), stateless_http=True)
