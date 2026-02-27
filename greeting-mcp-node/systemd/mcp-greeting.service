@@ -5,17 +5,10 @@ After=network.target
 [Service]
 Type=simple
 WorkingDirectory=/root/mcp-auth-demos/greeting-mcp-node
+EnvironmentFile=/root/mcp-auth-demos/greeting-mcp-node/.env
 ExecStart=/usr/bin/node dist/main.js
 Restart=on-failure
 RestartSec=5
-
-Environment=SK_ENV_URL=https://liveandbreathe.scalekit.dev
-Environment=SK_CLIENT_ID=skc_114122925279346962
-Environment=SK_CLIENT_SECRET=test_YCXtnJXiwDVF54AsCIP67fB8xSVeUuXOeaeRXBTfeaNzpRB6LLw3KxE2wpPoQKyr
-Environment=MCP_SERVER_ID=res_114244373767521282
-Environment=PROTECTED_RESOURCE_METADATA={"authorization_servers":["https://liveandbreathe.scalekit.dev/resources/res_114244373767521282"],"bearer_methods_supported":["header"],"resource":"https://mcp.stob.ai/","resource_documentation":"https://mcp.stob.ai/docs","scopes_supported":[]}
-Environment=EXPECTED_AUDIENCE=https://mcp.stob.ai/
-
 StandardOutput=journal
 StandardError=journal
 
