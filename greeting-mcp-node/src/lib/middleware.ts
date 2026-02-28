@@ -20,9 +20,7 @@ export async function authMiddleware(req: Request, res: Response, next: NextFunc
         const token = req.headers.authorization?.replace('Bearer ', '').trim();
         if (!token) throw new Error('Missing Bearer token');
 
-        await scalekit.validateToken(token, {
-            audience: [RESOURCE_ID],
-        });
+        await scalekit.validateToken(token);
         return next();
     } catch {
         return res.status(401).set(WWWHeader.key, WWWHeader.value).end();
